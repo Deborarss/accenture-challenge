@@ -5,10 +5,6 @@ import Button from "./componentes/button";
 import Style from "./app.module.css";
 import api from "./service/api";
 
-function getMessage() {
-  return Promise.resolve({ status: "ok" });
-}
-
 const buttons = [
   {
     number: 1,
@@ -47,10 +43,6 @@ const buttons = [
     letters: "wxyz",
   },
   {
-    number: "",
-    letters: "*",
-  },
-  {
     number: 0,
     letters: "_",
   },
@@ -62,6 +54,8 @@ const buttons = [
 
 function App() {
   const [numbers, setNumbers] = useState("");
+  const [text, setText] = useState([]);
+
   const handlerDisplay = (number) => {
     if (
       number !== "" &&
@@ -78,14 +72,24 @@ function App() {
     if (event.key === "Enter") {
       event.preventDefault();
       api.post("/", { number: numbers }).then((response) => {
-        console.log(response);
+        if (response.data.letter === "") {
+          setNumbers("");
+        }
+        setText((prev) => prev + response.data.letter);
+        setNumbers("");
       });
     }
   };
 
+  function handleBackspace() {
+    const erasedNumber = numbers.substring(0, numbers.length - 1);
+    setNumbers(erasedNumber);
+  }
+
   return (
     <div className={Style.phone} onKeyPress={(event) => submit(event)}>
-      <Display title={numbers}></Display>
+      <Display title={`${numbers} ${text}`}></Display>
+
       {buttons.map((button) => (
         <Button
           key={button.letters}
@@ -94,6 +98,7 @@ function App() {
           letters={button.letters}
         ></Button>
       ))}
+      <Button letters="*" onClick={() => handleBackspace()}></Button>
     </div>
   );
 }
