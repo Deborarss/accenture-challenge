@@ -1,24 +1,99 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Display from "./componentes/display";
+import Button from "./componentes/button";
+import Style from "./app.module.css";
+import api from "./service/api";
+
+function getMessage() {
+  return Promise.resolve({ status: "ok" });
+}
+
+const buttons = [
+  {
+    number: 1,
+    letters: "",
+  },
+  {
+    number: 2,
+    letters: "abc",
+  },
+  {
+    number: 3,
+    letters: "def",
+  },
+  {
+    number: 4,
+    letters: "ghi",
+  },
+  {
+    number: 5,
+    letters: "jkl",
+  },
+  {
+    number: 6,
+    letters: "mno",
+  },
+  {
+    number: 7,
+    letters: "pqrs",
+  },
+  {
+    number: 8,
+    letters: "tuv",
+  },
+  {
+    number: 9,
+    letters: "wxyz",
+  },
+  {
+    number: "",
+    letters: "*",
+  },
+  {
+    number: 0,
+    letters: "_",
+  },
+  {
+    number: "",
+    letters: "enter",
+  },
+];
 
 function App() {
+  const [numbers, setNumbers] = useState("");
+  const handlerDisplay = (number) => {
+    if (
+      number !== "" &&
+      number !== "*" &&
+      number !== "_" &&
+      number !== "#" &&
+      number !== 1
+    ) {
+      setNumbers(numbers + number);
+    }
+  };
+
+  const submit = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      api.post("/", { number: numbers }).then((response) => {
+        console.log(response);
+      });
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={Style.phone} onKeyPress={(event) => submit(event)}>
+      <Display title={numbers}></Display>
+      {buttons.map((button) => (
+        <Button
+          key={button.letters}
+          onClick={() => handlerDisplay(button.number)}
+          number={button.number}
+          letters={button.letters}
+        ></Button>
+      ))}
     </div>
   );
 }

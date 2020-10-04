@@ -1,0 +1,23 @@
+.phone {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 150px;
+  height: 300px;
+  background: rgba(68, 63, 88);
+  border-radius: 50px 50px 50px 50px/300px 300px 300px 300px;
+  box-shadow: inset 4px 0px 0 #ccc, inset -4px 0 0 #ccc;
+}
+
+.phone:before {
+  position: absolute;
+  top: -10px;
+  left: 17px;
+  width: 115px;
+  height: 100px;
+  z-index: -1;
+  background: rgb(68, 63, 88);
+  content: "";
+  border-radius: 25px/20px;
+}
