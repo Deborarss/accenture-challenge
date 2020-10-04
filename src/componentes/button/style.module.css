@@ -1,0 +1,14 @@
+.phone_button {
+  width: 26%;
+  padding-left: 3px;
+}
+.button {
+  width: 90%;
+  min-height: 35px;
+  background-color: white;
+  text-align: center;
+  border-radius: 5px;
+}
+.letter {
+  font-size: 10px;
+}
